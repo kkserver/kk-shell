@@ -15,6 +15,9 @@ pattern_fname = re.compile(r'\(([^\(\)]*)\)')
 pattern_arch = re.compile(r'\(for architecture ([a-zA-Z0-9]*)\)\:$')
 pattern_detail = re.compile(r'([0-9]*) ([a-zA-Z]*) (.*)')
 pattern_ltmp = re.compile(r'ltmp[0-9]*')
+pattern_classname = re.compile(r'_OBJC_CLASS_\$_(.*)')
+
+classs = {}
 
 if len(sys.argv) > 0 :
 
@@ -48,11 +51,32 @@ if len(sys.argv) > 0 :
 				size = match.group(1)
 				stype = match.group(2)
 				sname = match.group(3)
+				if stype == "S":
+					match = pattern_classname.search(sname)
+					if match:
+						classs[match.group(1)] = 0
 
 	if name != "":
 		fd.write(arch + "," + name + "," + str(int(size)) + "\n")	
 
 	fd.close()
 	sfd.close()
+
+	fd = open("./" + sys.argv[1] + ".unused.csv","w")
+
+	fd.write("CLASS\n")
+
+	nm = os.popen("nm -u -n -t d " + sys.argv[1])
+
+	for ln in nm.readlines():
+		match = pattern_classname.search(ln)
+		if match:
+			classs[match.group(1)] = classs.get(match.group(1),0) + 1
+
+	for k,v in classs.items():
+		if v == 0 :
+			fd.write(k + "\n")
+
+	fd.close()
 
 
