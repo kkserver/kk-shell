@@ -5,7 +5,7 @@
 
 cd .a文件路径
 
-size.py .a文件名
+nm/size.py .a文件名
 
 
 #输出  
