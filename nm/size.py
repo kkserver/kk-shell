@@ -56,6 +56,8 @@ if len(sys.argv) > 0 :
 					if match:
 						classs[match.group(1)] = 0
 
+	nm.close()
+
 	if name != "":
 		fd.write(arch + "," + name + "," + str(int(size)) + "\n")	
 
@@ -77,6 +79,8 @@ if len(sys.argv) > 0 :
 		if v == 0 :
 			fd.write(k + "\n")
 
+	nm.close()
+	
 	fd.close()
 
 
