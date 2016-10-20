@@ -16,3 +16,15 @@ nm/size.py .a文件名
 
 .a文件名.unused.csv 未使用类
 
+
+#未使用图片
+
+cd 图片目录
+
+nm/image.py .m类文件目录
+
+
+#输出
+
+unused.csv 未使用图片
+
