@@ -18,6 +18,8 @@ v_out=""
 v_in=""
 v_debug=os.getenv('DEBUG', '')
 
+print "V_DEBUG: " + v_debug
+
 for i in range(1,len(sys.argv)):
 	v = sys.argv[i]
 	if v == "-home":

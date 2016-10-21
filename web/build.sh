@@ -2,8 +2,10 @@
 
 #build js
 
-PWD=`pwd`
-HOME=`dirname $0`
+WORKDIR=`pwd`
+SHDIR=`dirname $0`
+
+echo $SHDIR
 
 exitCommand() {
 	exit $1
@@ -53,7 +55,7 @@ if [ -d "$STATIC" ]; then
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
 		else
-			java -jar $HOME/yuicompressor.jar --charset utf-8 --type js -o "$min" "$min.tmp"
+			java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type js -o "$min" "$min.tmp"
 		fi
 
 		rm -f "$min.tmp"
@@ -86,11 +88,11 @@ if [ -d "$STATIC" ]; then
 		done
 
 		rm "$min"
-		
+
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
 		else
-			java -jar $HOME/yuicompressor.jar --charset utf-8 --type css -o "$min" "$min.tmp"
+			java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type css -o "$min" "$min.tmp"
 		fi
 
 		rm -f "$min.tmp"
@@ -111,7 +113,7 @@ if [ -d "$VIEW" ]; then
 
 		rm -f "${map%.view.html}.html"
 		
-		CMD="$HOME/view.py -home $VIEW -o ${map%.view.html}.html -i $map"
+		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.html}.html -i $map"
 		runCommand
 
 		echo "build $map to ${map%.view.html}.html"
