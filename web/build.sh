@@ -55,7 +55,8 @@ if [ -d "$STATIC" ]; then
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
 		else
-			java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type js -o "$min" "$min.tmp"
+			CMD="java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type js -o \"$min\" \"$min.tmp\""
+			runCommand
 		fi
 
 		rm -f "$min.tmp"
@@ -92,7 +93,8 @@ if [ -d "$STATIC" ]; then
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
 		else
-			java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type css -o "$min" "$min.tmp"
+			CMD="java -jar $SHDIR/yuicompressor.jar --charset utf-8 --type css -o \"$min\" \"$min.tmp\""
+			runCommand
 		fi
 
 		rm -f "$min.tmp"
