@@ -16,6 +16,7 @@ def help():
 v_home="."
 v_out=""
 v_in=""
+v_debug=os.getenv('DEBUG', '')
 
 for i in range(1,len(sys.argv)):
 	v = sys.argv[i]
@@ -58,9 +59,14 @@ def parse(v_home,v_fd,v_in):
 		p = match.group(1)
 
 		if p.startswith("~"):
-			parse(v_home,v_fd,v_home + p[1:])
+			v_in = v_home + p[1:]
 		else:
-			parse(v_home,v_fd,os.path.join(cd,p))
+			v_in = os.path.join(cd,p)
+
+		if v_debug!="" and os.stat(v_in + "-debug"):
+			v_in = v_in + "-debug"
+
+		parse(v_home,v_fd,v_in)
 
 		text = text[ei:]
 
