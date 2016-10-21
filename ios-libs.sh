@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/bash
 
 KK_SDK=10.0
 
