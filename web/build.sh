@@ -122,5 +122,18 @@ if [ -d "$VIEW" ]; then
 		
 	done
 
+	for map in `find $VIEW -name "*.view.htm"`; do
+
+		echo "build $map ..."
+
+		rm -f "${map%.view.htm}.htm"
+		
+		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.htm}.htm -i $map"
+		runCommand
+
+		echo "build $map to ${map%.view.htm}.htm"
+		
+	done
+
 fi
 
