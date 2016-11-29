@@ -23,7 +23,7 @@ if len(sys.argv) > 0 :
 		if match:
 			if not images.has_key(match.group(1)):
 				images[match.group(1)] = 1
-				pp = os.popen("grep -R --include=\"*.m\" '@\"" +match.group(1)+ "\"' " + sys.argv[1])
+				pp = os.popen("grep -R --include=\"*.m\" '" +match.group(1)+ "' " + sys.argv[1])
 				rd = pp.readline()
 				if not rd:
 					fd.write(fname)
@@ -42,7 +42,7 @@ if len(sys.argv) > 0 :
 		if match:
 			if not images.has_key(match.group(1)):
 				images[match.group(1)] = 1
-				pp = os.popen("grep -R --include=\"*.m\" '@\"" +match.group(1)+ "\"' " + sys.argv[1])
+				pp = os.popen("grep -R --include=\"*.m\" '" +match.group(1)+ "' " + sys.argv[1])
 				rd = pp.readline()
 				if not rd:
 					fd.write(fname)
