@@ -120,7 +120,7 @@ function buildCommand() {
 				continue
 			fi
 			if [[ $KK_KEY = "LIB" ]]; then
-				KK_LIBS=" $KK_VALUE"
+				KK_LIBS="$KK_LIBS $KK_VALUE"
 				continue
 			fi
 			if [[ $KK_URL = "URL" ]]; then

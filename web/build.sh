@@ -25,7 +25,7 @@ if [ ! "$STATIC" ]; then
 fi
 
 if [ ! "$VIEW" ]; then
-	VIEW="./@app"
+	VIEW="./web"
 fi
 
 echo "STATIC:$STATIC"
@@ -109,6 +109,19 @@ fi
 
 if [ -d "$VIEW" ]; then
 
+	for map in `find $VIEW -name "*.view.lhtml"`; do
+
+		echo "build $map ..."
+
+		rm -f "${map%.view.lhtml}.lhtml"
+		
+		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.lhtml}.lhtml -i $map"
+		runCommand
+
+		echo "build $map to ${map%.view.lhtml}.lhtml"
+		
+	done
+
 	for map in `find $VIEW -name "*.view.html"`; do
 
 		echo "build $map ..."
@@ -119,19 +132,6 @@ if [ -d "$VIEW" ]; then
 		runCommand
 
 		echo "build $map to ${map%.view.html}.html"
-		
-	done
-
-	for map in `find $VIEW -name "*.view.htm"`; do
-
-		echo "build $map ..."
-
-		rm -f "${map%.view.htm}.htm"
-		
-		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.htm}.htm -i $map"
-		runCommand
-
-		echo "build $map to ${map%.view.htm}.htm"
 		
 	done
 
