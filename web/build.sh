@@ -21,11 +21,11 @@ runCommand() {
 }
 
 if [ ! "$STATIC" ]; then
-	STATIC="$WORKDIR/static"
+	STATIC="./static"
 fi
 
 if [ ! "$VIEW" ]; then
-	VIEW="$WORKDIR/web"
+	VIEW=".web"
 fi
 
 echo "STATIC:$STATIC"
@@ -37,15 +37,15 @@ if [ -d "$STATIC" ]; then
 
 		echo "build $map ..."
 
-		dir=${map%/*}
+		DIR=${map%/*}
 
 		min=${map%.map}
 
 		echo "" > "$min.tmp"
-
+		
 		for js in `cat $map`; do
 
-			cat "$dir/$js" >> "$min.tmp"
+			cat "$DIR/$js" >> "$min.tmp"
 			echo -e "\n" >> "$min.tmp"
 
 		done
@@ -75,7 +75,7 @@ if [ -d "$STATIC" ]; then
 
 		echo "build $map ..."
 
-		dir=${map%/*}
+		DIR=${map%/*}
 
 		min=${map%.map}
 
@@ -83,7 +83,7 @@ if [ -d "$STATIC" ]; then
 
 		for js in `cat $map`; do
 
-			cat "$dir/$js" >> "$min.tmp"
+			cat "$DIR/$js" >> "$min.tmp"
 			echo -e "\n" >> "$min.tmp"
 
 		done
