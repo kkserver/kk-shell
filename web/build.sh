@@ -25,7 +25,7 @@ if [ ! "$STATIC" ]; then
 fi
 
 if [ ! "$VIEW" ]; then
-	VIEW=".web"
+	VIEW="./web"
 fi
 
 echo "STATIC:$STATIC"
