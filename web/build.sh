@@ -21,11 +21,11 @@ runCommand() {
 }
 
 if [ ! "$STATIC" ]; then
-	STATIC="./static"
+	STATIC="$WORKDIR/static"
 fi
 
 if [ ! "$VIEW" ]; then
-	VIEW="./web"
+	VIEW="$WORKDIR/web"
 fi
 
 echo "STATIC:$STATIC"
@@ -50,7 +50,7 @@ if [ -d "$STATIC" ]; then
 
 		done
 
-		rm "$min"
+		rm -f "$min"
 
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
@@ -88,7 +88,7 @@ if [ -d "$STATIC" ]; then
 
 		done
 
-		rm "$min"
+		rm -f "$min"
 
 		if $DEBUG; then
 			cp "$min.tmp" "$min"
