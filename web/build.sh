@@ -24,12 +24,7 @@ if [ ! "$STATIC" ]; then
 	STATIC="./static"
 fi
 
-if [ ! "$VIEW" ]; then
-	VIEW="./web"
-fi
-
 echo "STATIC:$STATIC"
-echo "VIEW:$VIEW"
 
 if [ -d "$STATIC" ]; then
 
@@ -72,6 +67,20 @@ if [ -d "$STATIC" ]; then
 
 fi
 
+#biuld less
+
+if [ -d "$STATIC" ]; then
+
+	for map in `find $STATIC -name "*.less"`; do
+
+		CMD="lessc $map ${map%.*}.css"
+		runCommand
+
+	done
+
+fi
+
+
 #biuld css
 
 if [ -d "$STATIC" ]; then
@@ -105,38 +114,6 @@ if [ -d "$STATIC" ]; then
 		rm -f "$min.tmp"
 		
 		echo "build $map to $min"
-		
-	done
-
-fi
-
-#build html
-
-if [ -d "$VIEW" ]; then
-
-	for map in `find $VIEW -name "*.view.lhtml"`; do
-
-		echo "build $map ..."
-
-		rm -f "${map%.view.lhtml}.lhtml"
-		
-		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.lhtml}.lhtml -i $map"
-		runCommand
-
-		echo "build $map to ${map%.view.lhtml}.lhtml"
-		
-	done
-
-	for map in `find $VIEW -name "*.view.html"`; do
-
-		echo "build $map ..."
-
-		rm -f "${map%.view.html}.html"
-		
-		CMD="$SHDIR/view.py -home $VIEW -o ${map%.view.html}.html -i $map"
-		runCommand
-
-		echo "build $map to ${map%.view.html}.html"
 		
 	done
 
