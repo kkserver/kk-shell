@@ -6,7 +6,7 @@ import sys
 import re
 
 pattern = re.compile(r'.*')
-alias = "static"
+alias = os.getenv('OSS_ALIAS', "static")
 
 if len(sys.argv) > 1 :
 	alias = sys.argv[1]
