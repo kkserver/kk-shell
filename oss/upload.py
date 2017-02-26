@@ -4,6 +4,7 @@ import oss2
 import os
 import sys
 import re
+import gzip
 
 pattern = re.compile(r'.*')
 alias = os.getenv('OSS_ALIAS', "static")
@@ -38,6 +39,23 @@ for parent,dirnames,filenames in os.walk("."):
 				name = alias + parent[1:] + "/" + fname
 			if pattern.search(name):
 				print "[UP] [" +name+ "] " + parent + "/" + fname
-				oss2.resumable_upload(bucket, name, parent + "/" + fname)
+				if name.endswith(".js"):
+					f_in = open(parent + "/" + fname, 'rb')
+					f_out = gzip.open(parent + "/" + fname + ".gz", 'wb')
+					f_out.writelines(f_in)
+					f_out.close()
+					f_in.close()
+					bucket.put_object_from_file(name, parent + "/" + fname + ".gz",headers = {'Content-Type':'text/javascript; charset=utf-8','Content-Encoding':'gzip'})
+					os.remove(parent + "/" + fname + ".gz")
+				elif name.endswith(".css"):
+					f_in = open(parent + "/" + fname, 'rb')
+					f_out = gzip.open(parent + "/" + fname + ".gz", 'wb')
+					f_out.writelines(f_in)
+					f_out.close()
+					f_in.close()
+					bucket.put_object_from_file(name, parent + "/" + fname + ".gz",headers = {'Content-Type':'text/css; charset=utf-8','Content-Encoding':'gzip'})
+					os.remove(parent + "/" + fname + ".gz")
+				else:
+					bucket.put_object_from_file(name, parent + "/" + fname)
 				print "[OK] [" +name+ "] " + parent + "/" + fname 
 
