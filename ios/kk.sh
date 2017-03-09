@@ -1,6 +1,6 @@
 #/bin/bash
 
-KK_SDK=10.0
+KK_SDK=10.2
 
 function exitCommand() {
 	exit $1
