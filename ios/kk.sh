@@ -138,8 +138,12 @@ function buildCommand() {
 
 	echo $KK_NAME:$KK_VERSION
 
+	if [ ! -d "$HOME/Library" ]; then
+		mkdir "$HOME/Library"
+	fi
+
 	if [ ! -d "$HOME/Library/Frameworks" ]; then
-		mkdir $HOME/Library/Frameworks
+		mkdir "$HOME/Library/Frameworks"
 	fi
 
 	pwd
@@ -156,6 +160,11 @@ function buildCommand() {
 
 	CMD="lipo -create build/$TARGET-iphoneos/$KK_NAME.framework/$KK_NAME build/$TARGET-iphonesimulator/$KK_NAME.framework/$KK_NAME -output build/$TARGET/$KK_NAME.framework/$KK_NAME"
 	runCommand
+
+	if [ -d "build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules" ]; then
+		CMD="cp -r build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules/ build/$TARGET/$KK_NAME.framework/Modules/"
+		runCommand
+	fi
 
 	CMD="rm -rf $HOME/Library/Frameworks/$KK_NAME.framework"
 	runCommand
