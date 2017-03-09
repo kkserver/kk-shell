@@ -82,6 +82,7 @@ function buildCommand() {
 	local KK_VERSION
 	local KK_LIBS
 	local KK_URL
+	local KK_TYPE
 	local PWD
 	local KK_SECTION
 	local KK_KEY
@@ -90,6 +91,7 @@ function buildCommand() {
 	local URL
 	local TAG
 	local NAME
+	
 
 	PWD=`pwd`
 
@@ -123,8 +125,12 @@ function buildCommand() {
 				KK_LIBS="$KK_LIBS $KK_VALUE"
 				continue
 			fi
-			if [[ $KK_URL = "URL" ]]; then
+			if [[ $KK_KEY = "URL" ]]; then
 				KK_URL=$KK_VALUE
+				continue
+			fi
+			if [[ $KK_KEY = "TYPE" ]]; then
+				KK_TYPE=$KK_VALUE
 				continue
 			fi
 			continue
@@ -134,7 +140,9 @@ function buildCommand() {
 		fi
 	done
 
-	libsCommand
+	if [ ! $KK_SKIP_LIBS ]; then
+		libsCommand
+	fi
 
 	echo $KK_NAME:$KK_VERSION
 
@@ -147,36 +155,82 @@ function buildCommand() {
 	fi
 
 	pwd
-	cd $KK_NAME
 
-	CMD="xcodebuild -configuration $TARGET"
-	runCommand
-
-	CMD="xcodebuild -sdk iphonesimulator$KK_SDK -configuration $TARGET"
-	runCommand
-
-	CMD="cp -a build/$TARGET-iphoneos build/$TARGET"
-	runCommand
-
-	CMD="lipo -create build/$TARGET-iphoneos/$KK_NAME.framework/$KK_NAME build/$TARGET-iphonesimulator/$KK_NAME.framework/$KK_NAME -output build/$TARGET/$KK_NAME.framework/$KK_NAME"
-	runCommand
-
-	if [ -d "build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules" ]; then
-		CMD="cp -r build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules/ build/$TARGET/$KK_NAME.framework/Modules/"
+	if [ -f "Podfile" ]; then
+		CMD="pod install"
 		runCommand
 	fi
 
-	CMD="rm -rf $HOME/Library/Frameworks/$KK_NAME.framework"
-	runCommand
+	cd $KK_NAME
 
-	CMD="cp -r build/$TARGET/$KK_NAME.framework $HOME/Library/Frameworks/$KK_NAME.framework"
-	runCommand
+	
+	if [[ $KK_TYPE = "Application" ]]; then
 
-	rm -rf build
+		CMD="xcodebuild -configuration $TARGET"
+		runCommand
 
-	cd $PWD
+		CMD="cp -a build/$TARGET-iphoneos/$KK_NAME.app ../$KK_NAME.app"
+		runCommand
 
-	echo "[OK] buildCommand $PWD"
+		rm -rf build
+
+		cd $PWD
+
+		echo "[OK] buildCommand $PWD"
+
+	elif [ $KK_RELEASE ]; then
+
+		CMD="xcodebuild -configuration $TARGET"
+		runCommand
+
+		CMD="cp -a build/$TARGET-iphoneos build/$TARGET"
+		runCommand
+
+		CMD="rm -rf $HOME/Library/Frameworks/$KK_NAME.framework"
+		runCommand
+
+		CMD="cp -r build/$TARGET/$KK_NAME.framework $HOME/Library/Frameworks/$KK_NAME.framework"
+		runCommand
+
+		rm -rf build
+
+		cd $PWD
+
+		echo "[OK] buildCommand $PWD"
+
+	else
+
+		CMD="xcodebuild -configuration $TARGET"
+		runCommand
+
+		CMD="xcodebuild -sdk iphonesimulator$KK_SDK -configuration $TARGET"
+		runCommand
+
+		CMD="cp -a build/$TARGET-iphoneos build/$TARGET"
+		runCommand
+
+		CMD="lipo -create build/$TARGET-iphoneos/$KK_NAME.framework/$KK_NAME build/$TARGET-iphonesimulator/$KK_NAME.framework/$KK_NAME -output build/$TARGET/$KK_NAME.framework/$KK_NAME"
+		runCommand
+
+		if [ -d "build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules" ]; then
+			CMD="cp -r build/$TARGET-iphonesimulator/$KK_NAME.framework/Modules/ build/$TARGET/$KK_NAME.framework/Modules/"
+			runCommand
+		fi
+
+		CMD="rm -rf $HOME/Library/Frameworks/$KK_NAME.framework"
+		runCommand
+
+		CMD="cp -r build/$TARGET/$KK_NAME.framework $HOME/Library/Frameworks/$KK_NAME.framework"
+		runCommand
+
+		rm -rf build
+
+		cd $PWD
+
+		echo "[OK] buildCommand $PWD"
+
+	fi
+	
 
 }
 
