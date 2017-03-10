@@ -178,7 +178,7 @@ function buildCommand() {
 
 		echo "[OK] buildCommand $PWD"
 
-	elif [ $KK_RELEASE ]; then
+	elif [[ $TARGET = "Release" ]]; then
 
 		CMD="xcodebuild -configuration $TARGET"
 		runCommand
