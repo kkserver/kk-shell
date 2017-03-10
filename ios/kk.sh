@@ -66,7 +66,7 @@ function libsCommand() {
 			CMD="git checkout $TAG"
 			runCommand
 		fi
-		buildCommand
+		buildCommand $1
 		cd $HOME/.kk
 	done
 
@@ -141,7 +141,7 @@ function buildCommand() {
 	done
 
 	if [ ! $KK_SKIP_LIBS ]; then
-		libsCommand
+		libsCommand $1
 	fi
 
 	echo $KK_NAME:$KK_VERSION
