@@ -1,7 +1,7 @@
 #/bin/bash
 
 if [[ $KK_SDK = "" ]]; then
-	KK_SDK=10.2
+	KK_SDK=10.3
 fi
 
 function exitCommand() {
