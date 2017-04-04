@@ -1,6 +1,8 @@
 #/bin/bash
 
-KK_SDK=10.2
+if [[ $KK_SDK = "" ]]; then
+	KK_SDK=10.2
+fi
 
 function exitCommand() {
 	exit $1
